@@ -1,12 +1,13 @@
 # app.py — Sri Lanka Flood & Landslide Early Warning System
 
+import os
+import json
 import streamlit as st
 import pandas as pd
 import numpy as np
-import folium
 import joblib
 import geopandas as gpd
-from streamlit_folium import st_folium
+import pydeck as pdk
 
 st.set_page_config(
     page_title="Sri Lanka Flood Early Warning",
@@ -14,10 +15,60 @@ st.set_page_config(
     layout="wide"
 )
 
+# ── Premium UI / Custom CSS ───────────────────────────────
+st.markdown("""
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap');
+    
+    /* Main background and font adjustments */
+    html, body, [class*="css"] {
+        font-family: 'Poppins', sans-serif;
+    }
+    .stApp {
+        background: radial-gradient(circle at top left, #0f2027, #203a43, #2c5364);
+        color: #FAFAFA;
+    }
+    h1 {
+        background: -webkit-linear-gradient(45deg, #00C9FF, #92FE9D);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        font-weight: 800;
+        animation: fadeInDown 0.8s ease-out;
+    }
+    /* Metric Cards Glassmorphism */
+    div[data-testid="metric-container"] {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+        border-radius: 10px;
+        padding: 15px;
+        transition: transform 0.2s ease-in-out;
+        animation: fadeInUp 0.8s ease-out;
+    }
+    div[data-testid="metric-container"]:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 12px 40px 0 rgba(0, 201, 255, 0.2);
+        border: 1px solid rgba(0, 201, 255, 0.4);
+    }
+    /* Smooth animations */
+    @keyframes fadeInDown {
+        0% { opacity: 0; transform: translateY(-20px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInUp {
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+</style>
+""", unsafe_allow_html=True)
+
 # ── Load model ────────────────────────────────────────────
 @st.cache_resource
 def load_model():
-    return joblib.load("xgb_v2.pkl")
+    model_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), "models", "xgb_v2.pkl")
+    return joblib.load(model_path)
 
 @st.cache_data
 def load_geodata():
@@ -41,14 +92,12 @@ terrain = {
 DISTRICTS = list(terrain.keys())
 
 # ── Header ────────────────────────────────────────────────
-st.title("🌧️ Sri Lanka Flood & Landslide Early Warning")
+st.markdown("<h1 style='text-align: center;'>🌧️ Sri Lanka Flood & Landslide Early Warning</h1>", unsafe_allow_html=True)
 st.markdown(
-    "Enter current and recent rainfall to predict flood/landslide risk "
-    "across all 25 districts. Built using NASA GPM satellite data + "
-    "50 years of DesInventar disaster records."
+    "<p style='text-align: center; color: #cbd5e1; font-size: 1.1rem; margin-bottom: 2rem;'>"
+    "AI-powered 3D risk predictions updated in real time using NASA GPM satellite data.</p>",
+    unsafe_allow_html=True
 )
-
-st.divider()
 
 # ── Sidebar inputs ────────────────────────────────────────
 st.sidebar.header("Rainfall Inputs (mm)")
@@ -95,11 +144,25 @@ pred_df['alert'] = pred_df['risk_score'].apply(
     lambda x: '🔴 HIGH' if x >= 0.6 else ('🟡 MEDIUM' if x >= 0.35 else '🟢 LOW')
 )
 
+# ── Metrics (Moved to top for mobile UX) ──────────────────
+high   = (pred_df['risk_score'] >= 0.6).sum()
+medium = ((pred_df['risk_score'] >= 0.35) & 
+          (pred_df['risk_score'] < 0.6)).sum()
+low    = (pred_df['risk_score'] < 0.35).sum()
+
+c1, c2, c3, c4 = st.columns(4)
+c1.metric("🔴 High Risk",   high)
+c2.metric("🟡 Medium Risk", medium)
+c3.metric("🟢 Low Risk",    low)
+c4.metric("Model AUC-ROC", "0.822")
+
+st.divider()
+
 # ── Layout: map + table ───────────────────────────────────
 col1, col2 = st.columns([3, 2])
 
 with col1:
-    st.subheader("District Risk Map")
+    st.subheader("Interactive 3D Risk Map")
 
     lka2 = lka.copy()
     lka2.columns = [c.upper() for c in lka2.columns]
@@ -107,31 +170,40 @@ with col1:
     lka2 = lka2.merge(pred_df[['district','risk_score']],
                       left_on='NAME_1', right_on='district', how='left')
     lka2['risk_score'] = lka2['risk_score'].fillna(0.2)
+    
+    # Calculate 3D elevation and color for PyDeck
+    lka2['elevation'] = (lka2['risk_score'] ** 2) * 150000  # Exponential scale for dramatic 3D effect
+    # Create Neon Cyberpunk colors based on risk
+    lka2['fill_color'] = lka2['risk_score'].apply(
+        lambda x: [255, 51, 102, 220] if x >= 0.6 else ([255, 204, 0, 200] if x >= 0.35 else [0, 229, 255, 180])
+    )
 
-    m = folium.Map(location=[7.9, 80.7], zoom_start=7,
-                   tiles='CartoDB positron')
-    folium.Choropleth(
-        geo_data=lka2.__geo_interface__,
-        data=lka2,
-        columns=['NAME_1','risk_score'],
-        key_on='feature.properties.NAME_1',
-        fill_color='RdYlGn_r',
-        fill_opacity=0.75,
-        line_opacity=0.4,
-        legend_name='Risk Score (0–1)',
-        bins=[0, 0.2, 0.4, 0.6, 0.8, 1.0]
-    ).add_to(m)
+    geojson = json.loads(lka2.to_json())
+    
+    layer = pdk.Layer(
+        "GeoJsonLayer",
+        geojson,
+        opacity=0.8,
+        stroked=True,
+        filled=True,
+        extruded=True,
+        wireframe=True,
+        get_elevation="properties.elevation",
+        get_fill_color="properties.fill_color",
+        get_line_color=[255, 255, 255, 50],
+        pickable=True,
+        auto_highlight=True # Interactive glowing hover effect
+    )
 
-    for _, row in lka2.iterrows():
-        if row.GEOMETRY:
-            c = row.GEOMETRY.centroid
-            folium.CircleMarker(
-                location=[c.y, c.x], radius=4,
-                color='black', fill=True,
-                tooltip=f"{row['NAME_1']}: {row['risk_score']:.2f}"
-            ).add_to(m)
-
-    st_folium(m, width=520, height=500)
+    view_state = pdk.ViewState(latitude=7.8, longitude=80.7, zoom=6.5, pitch=55, bearing=15)
+    
+    m = pdk.Deck(
+        layers=[layer], 
+        initial_view_state=view_state, 
+        map_style="mapbox://styles/mapbox/dark-v10",
+        tooltip={"text": "{NAME_1}\nRisk Score: {risk_score}"}
+    )
+    st.pydeck_chart(m, use_container_width=True)
 
 with col2:
     st.subheader("District Risk Scores")
@@ -140,25 +212,12 @@ with col2:
         .reset_index(drop=True)
     display.columns = ['District','Risk Score','Alert Level']
     display['Risk Score'] = display['Risk Score'].round(3)
-    st.dataframe(display, use_container_width=True, height=500)
-
-# ── Metrics ───────────────────────────────────────────────
-st.divider()
-high   = (pred_df['risk_score'] >= 0.6).sum()
-medium = ((pred_df['risk_score'] >= 0.35) & 
-          (pred_df['risk_score'] < 0.6)).sum()
-low    = (pred_df['risk_score'] < 0.35).sum()
-
-c1, c2, c3, c4 = st.columns(4)
-c1.metric("🔴 High Risk Districts",   high)
-c2.metric("🟡 Medium Risk Districts", medium)
-c3.metric("🟢 Low Risk Districts",    low)
-c4.metric("Model AUC-ROC", "0.822")
+    st.dataframe(display, use_container_width=True, height=500, hide_index=True)
 
 st.divider()
 st.caption(
     "Model: XGBoost trained on NASA GPM IMERG rainfall (2000–2023) + "
     "DesInventar disaster records (1974–2020). "
     "AUC-ROC: 0.822 | Test period: 2018–2020 | "
-    "Built by [Your Name] · github.com/YOUR_USERNAME/srilanka-flood-warning"
+    "MADE BY HASIRU CHAMIKA"
 )
