@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SL-FloodWarning</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>"
+    />
+    <link rel="stylesheet" href="landing.css?v=2" />
+  </head>
+  <body>
+    <div
+      id="particles-container"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+      "
+    ></div>
+    <header class="navbar">
+      <a href="landing.html" class="logo" style="text-decoration: none"
+        >SL-FloodWarning</a
+      >
+      <nav>
+        <a
+          href="#"
+          onclick="
+            window.location.href =
+              'http://' + window.location.hostname + ':8501';
+            return false;
+          "
+          >Dashboard</a
+        >
+        <a href="data_sources.html">Data Sources</a>
+        <a href="api.html">API</a>
+        <a href="about.html">About</a>
+        <a href="support.html">Support</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <div class="hero-overlay"></div>
+      <div class="hero-container">
+        <div class="hero-content">
+          <h1 class="gradient-text">Sri Lanka Flood Warning System (SLFWS)</h1>
+          <p class="desc">
+            A collaborative, real-time warning framework based on GitHub
+            repository IT24102850/srilanka-flood-warning.
+          </p>
+          <p class="bold-text">
+            Predict. Prepare. Protect. Real-time data, community-driven
+            insights.
+          </p>
+          <div class="buttons">
+            <a
+              href="#"
+              onclick="
+                window.location.href =
+                  'http://' + window.location.hostname + ':8501'
+              "
+              class="btn-primary"
+              >ACCESS DASHBOARD</a
+            >
+            <a
+              href="https://github.com/IT24102850/srilanka-flood-warning"
+              class="btn-outline"
+              >VIEW ON GITHUB</a
+            >
+          </div>
+        </div>
+        <div class="hero-image slideshow-container">
+          <div class="slide fade">
+            <img
+              src="../images/slide1_response.jpg"
+              alt="Disaster Management & Emergency Response"
+            />
+            <div class="slide-text" style="padding: 16px; line-height: 1.5">
+              <strong style="font-size: 1.1rem; color: #00c9ff"
+                >🚨 Proactive Response</strong
+              ><br />
+              <span style="font-size: 0.9rem; color: #cbd5e1; font-weight: 400"
+                >Real-time intelligence & 16-day evacuation forecasts.</span
+              >
+            </div>
+          </div>
+          <div class="slide fade">
+            <img
+              src="../images/slide2_safety.jpg"
+              alt="Public Safety & Awareness"
+            />
+            <div class="slide-text" style="padding: 16px; line-height: 1.5">
+              <strong style="font-size: 1.1rem; color: #92fe9d"
+                >🛡️ Public Safety</strong
+              ><br />
+              <span style="font-size: 0.9rem; color: #cbd5e1; font-weight: 400"
+                >Clear 3D maps, live warnings, and emergency guidelines.</span
+              >
+            </div>
+          </div>
+          <div class="slide fade">
+            <img
+              src="../images/slide3_community.jpg"
+              alt="Community Participation (Crowdsourcing)"
+            />
+            <div class="slide-text" style="padding: 16px; line-height: 1.5">
+              <strong style="font-size: 1.1rem; color: #ffcc00"
+                >🤝 Community Ground Truth</strong
+              ><br />
+              <span style="font-size: 0.9rem; color: #cbd5e1; font-weight: 400"
+                >Submit live field photos to validate AI predictions.</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid-section">
+      <div class="column glass-card">
+        <h2>Key Features</h2>
+        <ul class="features-list">
+          <li>Real-time Precipitation monitoring</li>
+          <li>District-specific Risk Assessments</li>
+          <li>Crowdsourced Flood Reporting</li>
+          <li>Integrates Public Data Sources</li>
+        </ul>
+      </div>
+      <div class="column glass-card">
+        <h2>How it Works</h2>
+        <div class="flowchart">
+          <div class="module accent-turquoise">Satellite Data Ingestion</div>
+          <div class="arrow">↓</div>
+          <div class="row">
+            <div class="module">Terrain Analysis</div>
+            <div class="arrow horizontal">→</div>
+            <div class="module accent-orange">XGBoost ML Model</div>
+          </div>
+          <div class="arrow">↓</div>
+          <div class="module accent-crimson">Real-time Risk Map</div>
+        </div>
+      </div>
+      <div class="column glass-card">
+        <h2>Our Mission</h2>
+        <p class="mission-desc">
+          Reduce the initial impact of moderate flood risk, weather-related
+          risks expanding across districts and conditions with active warnings
+          and community support.
+        </p>
+      </div>
+      <div class="column glass-card">
+        <h2>Real-Time Analytics</h2>
+        <p class="mission-desc">
+          Deep dive into district-level vulnerability profiles, risk
+          distributions, and correlation charts between rainfall and disaster
+          likelihood.
+        </p>
+      </div>
+      <div class="column glass-card">
+        <h2>16-Day Forecast</h2>
+        <p class="mission-desc">
+          Integrates live Open-Meteo API data to predict future risk scores,
+          visualized through dynamic heatmaps and interactive 2D spatial maps.
+        </p>
+      </div>
+      <div class="column glass-card">
+        <h2>Vision AI Reports</h2>
+        <p class="mission-desc">
+          Upload field photos via camera or file to cross-validate our XGBoost
+          predictions with Convolutional Neural Network (CNN) ground-truth
+          analysis.
+        </p>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-left">
+        <h3>Contributors & Support</h3>
+        <a href="#">Documentation</a> | <a href="#">Issue Tracker</a>
+      </div>
+      <div class="footer-center">
+        <p>SRI LANKA FLOOD WARNING</p>
+      </div>
+    </footer>
+
+    <script>
+      let slideIndex = 0;
+      showSlides();
+
+      function showSlides() {
+        let i;
+        let slides = document.getElementsByClassName("slide");
+        if (slides.length === 0) return;
+        for (i = 0; i < slides.length; i++) {
+          slides[i].style.display = "none";
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) {
+          slideIndex = 1;
+        }
+        slides[slideIndex - 1].style.display = "block";
+        setTimeout(showSlides, 4000); // Change image every 4 seconds
+      }
+
+      const container = document.getElementById("particles-container");
+      for (let i = 0; i < 50; i++) {
+        const particle = document.createElement("div");
+        particle.className = "particle";
+        const size = Math.random() * 4 + 2;
+        particle.style.width = size + "px";
+        particle.style.height = size + "px";
+        particle.style.left = Math.random() * 100 + "%";
+        particle.style.animationDuration = Math.random() * 20 + 10 + "s";
+        particle.style.animationDelay = Math.random() * 10 + "s";
+        container.appendChild(particle);
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,72 @@
+========================================================================
+      SRI LANKA FLOOD & LANDSLIDE EARLY WARNING SYSTEM (SLFWS)
+                     Features & Capabilities List
+========================================================================
+
+1. 🌍 CORE SYSTEM CAPABILITIES
+------------------------------------------------------------------------
+- Real-time district-level flood and landslide risk predictions.
+- Driven by an XGBoost Machine Learning model.
+- Uses NASA GPM IMERG satellite rainfall data and SRTM terrain elevation.
+- Seamless Navigation: Home, Methodology, About Us, and Contact Us.
+
+2. 🎛️ SIDEBAR CONTROLS & SETTINGS
+------------------------------------------------------------------------
+- Live UTC+5:30 Clock.
+- Rainfall Manual Overrides: Adjust current, last month, 2 months ago, and 3 months ago rainfall values (0-600mm) for custom simulations.
+- Seasonality Selection: Change the current month to see how monsoon seasons affect risk.
+- Alert Preferences: Toggle switches to enable/disable Live Alerts and Sound Alerts.
+- System Status Monitor: Real-time status for Satellite Link, Model Inference, Data Pipeline, and API Gateway.
+
+3. 🗺️ 3D RISK MAP (TAB 1)
+------------------------------------------------------------------------
+- Interactive 3D extruded map of all 25 districts in Sri Lanka.
+- Toggleable Layers: Turn on/off Volumetric Clouds, Animated Rain Drops, Flood Waves (rings), and Landslide Markers.
+- Dynamic Elevation: District height reacts visually to the amount of rainfall.
+- Color-Coded Risk: Districts change colors from cyan (safe) to crimson (critical) based on AI probability.
+- Interactive Tooltips: Hover over any district to see specific Risk %, Rainfall, and Name.
+
+4. 📊 ANALYTICS DASHBOARD (TAB 2)
+------------------------------------------------------------------------
+- Risk Level Distribution: Bar chart showing how many districts are Critical, Moderate, or Low risk.
+- Top 10 High-Risk Districts: Horizontal bar chart ranking the most vulnerable areas.
+- Risk vs Rainfall Scatter Plot: Interactive correlation graph showing risk clusters.
+- Average Risk Gauge: Speedometer-style chart showing the national average risk index.
+- District Deep Dive (Radar Chart): Select any district to view its specific profile across Overall Risk, Terrain Vulnerability, Rain Intensity, Weather Anomaly, and 3-Month Saturation.
+
+5. 📋 DISTRICT TABLE (TAB 3)
+------------------------------------------------------------------------
+- Searchable & Sortable Database: Filter data for specific districts.
+- Data Columns: View District, Risk Score, Alert Level, Rainfall (mm), and Terrain Risk at a glance.
+- Export Capability: One-click "Download Risk Report" button to save current data as a CSV file.
+
+6. 🚨 ALERTS & INFO (TAB 4)
+------------------------------------------------------------------------
+- Live Risk Alerts: Automatically generated text warnings for districts hitting Critical (>=60%) or Moderate (>=35%) risk thresholds.
+- Evacuation Guidelines: Expandable safety procedures.
+- Emergency Contacts: Quick reference table for DMC Hotline (117), Police, Ambulance, etc.
+- Flood Preparedness Tips: Actionable survival information.
+
+7. 🔮 16-DAY FORECAST (TAB 5)
+------------------------------------------------------------------------
+- Open-Meteo API Integration: Fetches 16 days of real future weather data.
+- Summary Metrics: Displays the Peak Risk District, Peak Risk Date, and total High Risk Days.
+- Interactive 2D Spatial Map: Use a slider to scroll through the next 16 days and watch risk (or rainfall) move across Sri Lanka.
+- Forecast Heatmap: Visual grid showing all 25 districts against the next 16 days.
+- Trend Line: Graph showing the projected national average risk score over the next two weeks.
+- Upcoming Critical Events: Automated alert list for any future dates that cross the danger threshold.
+
+8. 📸 VISION AI (TAB 6)
+------------------------------------------------------------------------
+- Crowdsourced Ground Truth: Submit field reports to validate the AI.
+- Flexible Input: Upload an image file or take a live photo using the device camera.
+- CNN Inference (Mock): Evaluates the image for flooding, waterlogging, or landslides.
+- XGBoost Cross-Validation: Automatically compares what the Vision AI sees in the photo with what the XGBoost model predicted for that district.
+
+9. 💼 SERVICES AVAILABLE TO USERS & STAKEHOLDERS
+------------------------------------------------------------------------
+- Disaster Management & Emergency Response: Actionable real-time risk intelligence, highest risk predictions, and 16-day forecasts for proactive evacuation and resource deployment.
+- Public Safety & Awareness: Live alerts, clear visual 3D maps, emergency contacts (117, 119), and flood preparedness guidelines to keep citizens safe.
+- Data Export & Reporting: Downloadable CSV data reports containing district-by-district quantitative risk scores for local authorities and researchers.
+- Agricultural & Environmental Planning: 16-day precipitation and environmental anomaly forecasts to assist in crop and logistics planning.
+- Community Participation (Crowdsourcing): A platform for users to submit on-the-ground visual reports (photos) to assist in AI validation and provide ground truth to authorities.

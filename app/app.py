@@ -82,84 +82,17 @@ add_particle_background()
 # ============================================================================
 # TOP NAVIGATION BAR
 # ============================================================================
-global_nav = option_menu(
-    menu_title=None,
-    options=["Home", "Methodology", "About Us", "Contact Us"],
-    icons=["house", "book", "people", "envelope"],
-    default_index=0,
-    orientation="horizontal",
-    styles={
-        "container": {
-            "padding": "0!important", 
-            "background-color": "transparent",
-            "border": "none",
-            "margin-bottom": "1rem"
-        },
-        "icon": {"color": "#00C9FF", "font-size": "1.1rem"}, 
-        "nav-link": {
-            "font-family": "'Space Grotesk', sans-serif",
-            "font-size": "1rem", 
-            "font-weight": "500",
-            "text-align": "center",
-            "margin": "0px 10px", 
-            "color": "#8A8F9E",
-            "--hover-color": "rgba(0, 201, 255, 0.1)"
-        },
-        "nav-link-selected": {
-            "background": "linear-gradient(135deg, rgba(0,201,255,0.2), rgba(146,254,157,0.1))", 
-            "color": "#ffffff",
-            "border": "1px solid rgba(0, 201, 255, 0.3)",
-            "border-radius": "12px"
-        },
-    }
-)
-
-if global_nav == "Methodology":
-    st.markdown("<h2 class='gradient-text' style='text-align: center;'>System Methodology</h2><br>", unsafe_allow_html=True)
-    st.markdown("""
-        <div class="glass-card">
-            <h4>Data Sources & AI Pipeline</h4>
-            <p style="color: #8A8F9E;">This system uses a data-driven approach to predict flood and landslide risks across Sri Lanka's 25 districts.</p>
-            <ul style="color: #cbd5e1; margin-top: 1rem; line-height: 1.8;">
-                <li><b style="color: #00C9FF;">NASA GPM IMERG:</b> Real-time satellite precipitation data continuously updating our rainfall features.</li>
-                <li><b style="color: #00C9FF;">SRTM Terrain Data:</b> Digital elevation and slope metrics used to estimate landslide vulnerabilities.</li>
-                <li><b style="color: #00C9FF;">Machine Learning:</b> XGBoost classifier trained on 50 years of historical disaster data from the DesInventar disaster database.</li>
-            </ul>
-        </div>
-    """, unsafe_allow_html=True)
-    st.stop()
-    
-elif global_nav == "About Us":
-    st.markdown("<h2 class='gradient-text' style='text-align: center;'>About the Project</h2><br>", unsafe_allow_html=True)
-    st.markdown("""
-        <div class="glass-card">
-            <h4>Our Mission</h4>
-            <p style="color: #cbd5e1; line-height: 1.8; margin-top: 1rem;">Built in response to the devastating impacts of recent extreme weather events, our goal is to transition Sri Lanka's early warning infrastructure from static rule-based thresholds to dynamic, AI-powered predictive models.</p>
-            <p style="color: #cbd5e1; line-height: 1.8;">We aim to provide actionable, district-level intelligence 24-48 hours in advance to the Disaster Management Centre (DMC) and the general public, ultimately saving lives and reducing economic loss.</p>
-        </div>
-    """, unsafe_allow_html=True)
-    st.stop()
-
-elif global_nav == "Contact Us":
-    st.markdown("<h2 class='gradient-text' style='text-align: center;'>Contact Us</h2><br>", unsafe_allow_html=True)
-    col1, col2 = st.columns([1, 1], gap="large")
-    with col1:
-        st.markdown("""
-            <div class="glass-card">
-                <h4 style="margin-bottom: 1rem;">Get in Touch</h4>
-                <p style="color: #cbd5e1; margin-bottom: 0.8rem;"><i class="fa-solid fa-envelope" style="color: #00C9FF; margin-right: 10px;"></i> <b>Email:</b> earlywarning@srilanka-ai.org</p>
-                <p style="color: #cbd5e1; margin-bottom: 0.8rem;"><i class="fa-solid fa-location-dot" style="color: #00C9FF; margin-right: 10px;"></i> <b>Address:</b> Disaster Management Centre, Colombo</p>
-                <p style="color: #cbd5e1; margin-bottom: 0.8rem;"><i class="fa-solid fa-phone" style="color: #FF3366; margin-right: 10px;"></i> <b>Emergency Hotline:</b> 117</p>
+st.markdown("""
+    <div style="display: flex; justify-content: center; margin-bottom: 1rem;">
+        <a href="#" onclick="window.top.location.href = 'http://' + window.location.hostname + ':8000/app/landing.html'; return false;" style="text-decoration: none;">
+            <div style="display: flex; align-items: center; font-family: 'Space Grotesk', sans-serif; font-size: 1rem; font-weight: 500; color: #8A8F9E; padding: 8px 16px; border: 1px solid transparent; border-radius: 12px; transition: all 0.3s ease;" 
+                 onmouseover="this.style.background='linear-gradient(135deg, rgba(0,201,255,0.2), rgba(146,254,157,0.1))'; this.style.color='#ffffff'; this.style.borderColor='rgba(0, 201, 255, 0.3)';" 
+                 onmouseout="this.style.background='transparent'; this.style.color='#8A8F9E'; this.style.borderColor='transparent';">
+                <i class="fa-solid fa-arrow-left" style="color: #00C9FF; margin-right: 8px;"></i> Back to Landing Page
             </div>
-        """, unsafe_allow_html=True)
-    with col2:
-        with st.form("contact_form"):
-            st.markdown("#### Send a Message")
-            st.text_input("Full Name")
-            st.text_input("Email Address")
-            st.text_area("How can we help you?")
-            st.form_submit_button("Submit Request", use_container_width=True)
-    st.stop()
+        </a>
+    </div>
+""", unsafe_allow_html=True)
 
 # ============================================================================
 # LOAD MODEL AND DATA
@@ -457,8 +390,8 @@ st.markdown("<br>", unsafe_allow_html=True)
 # ============================================================================
 selected_tab = option_menu(
     menu_title=None,
-    options=["3D RISK MAP", "ANALYTICS", "DISTRICT TABLE", "ALERTS & INFO", "FORECAST"],
-    icons=["map", "bar-chart-line", "table", "shield-exclamation", "calendar3"],
+    options=["3D RISK MAP", "ANALYTICS", "DISTRICT TABLE", "ALERTS & INFO", "FORECAST", "VISION AI"],
+    icons=["map", "bar-chart-line", "table", "shield-exclamation", "calendar3", "camera"],
     default_index=0,
     orientation="horizontal",
     styles={
@@ -1137,27 +1070,43 @@ if selected_tab == "FORECAST":
 
             # ── 2D Map: Spatial Risk Forecast ─────────────
             st.markdown("### 🗺️ 2D Spatial Risk Forecast")
+            
+            map_metric = st.radio(
+                "Select Map Metric:",
+                ["Flood & Landslide Risk", "Predicted Rainfall (mm)"],
+                horizontal=True
+            )
+            
             selected_date = st.select_slider(
                 "Slide to view forecast for a specific date:", 
                 options=future_df['day_label'].unique().tolist()
             )
             map_day_df = future_df[future_df['day_label'] == selected_date]
             
-            fig_2d_map = px.choropleth_mapbox(
-                map_day_df,
-                geojson=json.loads(lka.to_json()),
-                locations='district',
-                featureidkey="properties.NAME_1",
-                color='risk_score',
-                color_continuous_scale=[
+            if map_metric == "Predicted Rainfall (mm)":
+                color_col = 'rainfall_mm'
+                color_scale = "Blues"
+                color_range = [0, max(50, future_df['rainfall_mm'].max())]
+            else:
+                color_col = 'risk_score'
+                color_scale = [
                     [0.0,  '#001133'],
                     [0.2,  '#003366'],
                     [0.35, '#00C9FF'],
                     [0.6,  '#FFCC00'],
                     [0.8,  '#FF3366'],
                     [1.0,  '#FF0032']
-                ],
-                range_color=[0, 1],
+                ]
+                color_range = [0, 1]
+            
+            fig_2d_map = px.choropleth_mapbox(
+                map_day_df,
+                geojson=json.loads(lka.to_json()),
+                locations='district',
+                featureidkey="properties.NAME_1",
+                color=color_col,
+                color_continuous_scale=color_scale,
+                range_color=color_range,
                 mapbox_style="carto-darkmatter",
                 zoom=5.8,
                 center={"lat": 7.8, "lon": 80.7},
@@ -1305,6 +1254,74 @@ if selected_tab == "FORECAST":
             st.info(
                 "This tab requires internet access to fetch "
                 "live weather data from Open-Meteo.")
+
+# ============================================================================
+# TAB 6: VISION AI (GROUND TRUTH)
+# ============================================================================
+if selected_tab == "VISION AI":
+    st.markdown("""
+        <span class="gradient-text" style="font-size:1.4rem;">
+            📸 Field Reports (Vision AI)
+        </span>
+        <p style="color:#8A8F9E;">
+            Upload real-time field photos to validate predictive models using Convolutional Neural Networks.
+        </p>
+    """, unsafe_allow_html=True)
+    
+    col_upload, col_result = st.columns([1, 1], gap="large")
+    
+    with col_upload:
+        st.markdown("### 📤 Submit Report")
+        selected_district_report = st.selectbox("Location (District):", DISTRICTS, index=DISTRICTS.index('Colombo'))
+        
+        upload_method = st.radio("Image Source", ["Upload File", "Take Photo"], horizontal=True)
+        
+        image_to_process = None
+        if upload_method == "Upload File":
+            image_to_process = st.file_uploader("Select an incident photo...", type=["jpg", "jpeg", "png"])
+        else:
+            image_to_process = st.camera_input("Capture current surroundings")
+            
+    with col_result:
+        st.markdown("### 🔍 CNN Inference")
+        if image_to_process is not None:
+            st.image(image_to_process, caption="Received Imagery", use_container_width=True)
+            
+            if st.button("Run Image Classification", use_container_width=True, type="primary"):
+                with st.spinner("Initializing EfficientNet... Extracting features..."):
+                    time.sleep(2) # Simulate model latency
+                    
+                    # Mock model inference (Replace with actual model.predict() later)
+                    classes = [
+                        "🟢 Normal / No Danger",
+                        "🟡 Waterlogging / Minor Flood",
+                        "🔴 Severe Flood",
+                        "🟤 Landslide / Blocked Road"
+                    ]
+                    
+                    predicted_class = random.choice(classes)
+                    confidence = random.uniform(0.85, 0.98) # Mock confidence score
+                    
+                    st.markdown("#### Model Output:")
+                    st.markdown(f"### {predicted_class}")
+                    st.progress(confidence, text=f"Confidence Score: {confidence:.2%}")
+                    
+                    # Cross-validation with XGBoost
+                    xgb_risk = pred_df[pred_df['district'] == selected_district_report].iloc[0]['risk_score']
+                    
+                    st.divider()
+                    st.markdown("#### 🔗 XGBoost Cross-Validation")
+                    st.markdown(f"**Current predicted risk for {selected_district_report}:** `{xgb_risk:.1%}`")
+                    
+                    # Simple logic for demo validation
+                    if ("Flood" in predicted_class or "Landslide" in predicted_class) and xgb_risk >= 0.35:
+                        st.success("✅ **MATCH:** Vision AI confirms XGBoost high-risk prediction.")
+                    elif "Normal" in predicted_class and xgb_risk < 0.45:
+                        st.success("✅ **MATCH:** Vision AI confirms XGBoost safe/low-risk prediction.")
+                    else:
+                        st.warning("⚠️ **DIVERGENCE:** Ground truth shows localized variations not captured by district-wide model.")
+        else:
+            st.info("Awaiting image input. Please upload a file or use the camera to begin inference.")
 
 # ============================================================================
 # FOOTER

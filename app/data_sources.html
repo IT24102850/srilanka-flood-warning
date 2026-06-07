@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Data Sources - SL-FloodWarning</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌊</text></svg>"
+    />
+    <link rel="stylesheet" href="landing.css" />
+  </head>
+  <body>
+    <div
+      id="particles-container"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 0;
+      "
+    ></div>
+    <header class="navbar">
+      <a href="landing.html" class="logo" style="text-decoration: none"
+        >SL-FloodWarning</a
+      >
+      <nav>
+        <a
+          href="#"
+          onclick="
+            window.location.href =
+              'http://' + window.location.hostname + ':8501';
+            return false;
+          "
+          >Dashboard</a
+        >
+        <a href="data_sources.html">Data Sources</a>
+        <a href="api.html">API</a>
+        <a href="about.html">About</a>
+        <a href="support.html">Support</a>
+      </nav>
+    </header>
+
+    <section
+      style="
+        padding: 8rem 5%;
+        min-height: 70vh;
+        position: relative;
+        z-index: 10;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+      "
+    >
+      <div class="glass-card" style="max-width: 800px; width: 100%">
+        <h1
+          class="gradient-text"
+          style="font-size: 2.5rem; margin-bottom: 1rem"
+        >
+          Data Sources
+        </h1>
+        <p class="desc" style="color: #cbd5e1; line-height: 1.8">
+          Our AI models are trained and powered by the following public
+          datasets:
+        </p>
+        <ul class="features-list" style="margin-top: 1.5rem; margin-left: 1rem">
+          <li>
+            <strong style="color: #00c9ff">NASA GPM IMERG:</strong> Global
+            Precipitation Measurement data for real-time rainfall monitoring.
+          </li>
+          <li>
+            <strong style="color: #92fe9d">SRTM DEM:</strong> Digital Elevation
+            Model used for assessing slope and terrain vulnerability.
+          </li>
+          <li>
+            <strong style="color: #ffcc00">DesInventar LKA:</strong> 50 years of
+            historical Sri Lankan disaster records used for model training.
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="footer-left">
+        <h3>Contributors & Support</h3>
+        <a href="#">Documentation</a> | <a href="support.html">Issue Tracker</a>
+      </div>
+      <div class="footer-center">
+        <p>SRI LANKA FLOOD WARNING</p>
+      </div>
+    </footer>
+    <script>
+      const container = document.getElementById("particles-container");
+      for (let i = 0; i < 50; i++) {
+        const particle = document.createElement("div");
+        particle.className = "particle";
+        const size = Math.random() * 4 + 2;
+        particle.style.width = size + "px";
+        particle.style.height = size + "px";
+        particle.style.left = Math.random() * 100 + "%";
+        particle.style.animationDuration = Math.random() * 20 + 10 + "s";
+        particle.style.animationDelay = Math.random() * 10 + "s";
+        container.appendChild(particle);
+      }
+    </script>
+  </body>
+</html>

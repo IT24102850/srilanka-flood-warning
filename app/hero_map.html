@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3D Sri Lanka Map</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background: transparent;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.128.0/build/three.module.js",
+          "three/addons/": "https://unpkg.com/three@0.128.0/examples/jsm/"
+        }
+      }
+    </script>
+    <script type="module">
+      import * as THREE from "three";
+      import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+      const scene = new THREE.Scene();
+
+      const camera = new THREE.PerspectiveCamera(
+        45,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        2000,
+      );
+      camera.position.set(-80, 160, 220);
+      camera.lookAt(0, 0, 0);
+
+      const renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true,
+      });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setClearColor(0x000000, 0);
+      document.body.appendChild(renderer.domElement);
+
+      const ambientLight = new THREE.AmbientLight(0xffffff, 1.0);
+      scene.add(ambientLight);
+      const dirLight = new THREE.DirectionalLight(0xffffff, 0.9);
+      dirLight.position.set(100, 200, 80);
+      scene.add(dirLight);
+      const fillLight = new THREE.DirectionalLight(0x00c9ff, 0.5);
+      fillLight.position.set(-80, 60, -100);
+      scene.add(fillLight);
+
+      const controls = new OrbitControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.autoRotate = true;
+      controls.autoRotateSpeed = 1.5;
+      controls.enableZoom = false;
+      controls.enablePan = false;
+
+      async function loadGeoJson() {
+        try {
+          const url =
+            "https://geodata.ucdavis.edu/gadm/gadm4.1/json/gadm41_LKA_1.json";
+          const res = await fetch(url);
+          const data = await res.json();
+          const features = data.features;
+
+          const lonMin = 79.5,
+            lonMax = 82.0,
+            latMin = 5.8,
+            latMax = 9.9;
+          function project(lon, lat) {
+            const x = ((lon - lonMin) / (lonMax - lonMin)) * 160 - 80;
+            const z = ((lat - latMin) / (latMax - latMin)) * 160 - 80;
+            return { x, z };
+          }
+
+          features.forEach((feat) => {
+            const geom = feat.geometry;
+            let coordsArr = [];
+            if (geom.type === "Polygon") coordsArr = [geom.coordinates[0]];
+            else if (geom.type === "MultiPolygon")
+              coordsArr = geom.coordinates.map((poly) => poly[0]);
+
+            const shape = new THREE.Shape();
+            let first = true;
+            coordsArr.forEach((ring) => {
+              ring.forEach((coord, idx) => {
+                const { x, z } = project(coord[0], coord[1]);
+                if (idx === 0 && first) shape.moveTo(x, z);
+                else if (first && idx === 0) shape.moveTo(x, z);
+                else shape.lineTo(x, z);
+                first = false;
+              });
+            });
+
+            const height = 10 + Math.random() * 30;
+            const extrudeSettings = {
+              steps: 1,
+              depth: height,
+              bevelEnabled: true,
+              bevelThickness: 0.5,
+              bevelSize: 0.3,
+              bevelSegments: 3,
+            };
+            const geometryExt = new THREE.ExtrudeGeometry(
+              shape,
+              extrudeSettings,
+            );
+            geometryExt.computeVertexNormals();
+
+            const risks = [0xff3366, 0xffaa00, 0x00ccff, 0x92fe9d];
+            const topColor = risks[Math.floor(Math.random() * risks.length)];
+            const sideColor = new THREE.Color(topColor)
+              .multiplyScalar(0.3)
+              .getHex();
+
+            const materialFront = new THREE.MeshStandardMaterial({
+              color: sideColor,
+              roughness: 0.5,
+              metalness: 0.2,
+            });
+            const materialTop = new THREE.MeshStandardMaterial({
+              color: topColor,
+              roughness: 0.2,
+            });
+
+            const mesh = new THREE.Mesh(geometryExt, [
+              materialFront,
+              materialTop,
+            ]);
+            scene.add(mesh);
+          });
+        } catch (error) {
+          console.error("Error loading GeoJSON", error);
+        }
+      }
+
+      function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+      }
+
+      loadGeoJson().then(() => animate());
+    </script>
+  </body>
+</html>
