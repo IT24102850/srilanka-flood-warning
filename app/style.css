@@ -1,0 +1,118 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100..900;1,100..900&family=Space+Grotesk:wght@300;400;500;600;700&display=swap");
+/* Import external Animate.css library for premium animations */
+@import url("https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css");
+
+/* Global Styles */
+.stApp {
+  background: linear-gradient(135deg, #0a0f1a 0%, #0f1623 50%, #1a1f2f 100%);
+  font-family: "Inter", "Space Grotesk", sans-serif;
+}
+
+/* Hide Streamlit Branding */
+#MainMenu {
+  visibility: hidden;
+}
+footer {
+  visibility: hidden;
+}
+header {
+  visibility: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #00c9ff, #92fe9d);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #92fe9d, #00c9ff);
+}
+
+/* Glassmorphic Cards */
+.glass-card {
+  background: rgba(20, 25, 40, 0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 1.5rem;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.glass-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(0, 201, 255, 0.3);
+  box-shadow: 0 20px 40px 0 rgba(0, 201, 255, 0.15);
+}
+
+/* Animated Gradient Text */
+.gradient-text {
+  background: linear-gradient(135deg, #00c9ff 0%, #92fe9d 50%, #00c9ff 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+@keyframes shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+/* Metrics Styling */
+.metric-card {
+  background: linear-gradient(
+    135deg,
+    rgba(0, 201, 255, 0.1),
+    rgba(146, 254, 157, 0.05)
+  );
+  border: 1px solid rgba(0, 201, 255, 0.2);
+  border-radius: 20px;
+  padding: 1.2rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+.metric-card:hover {
+  transform: scale(1.02);
+  border-color: rgba(0, 201, 255, 0.5);
+  box-shadow: 0 0 25px rgba(0, 201, 255, 0.2);
+}
+.metric-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #fff, #00c9ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Sidebar & Container Styling */
+[data-testid="stSidebar"] {
+  background: rgba(10, 15, 26, 0.95);
+  backdrop-filter: blur(10px);
+  border-right: 1px solid rgba(0, 201, 255, 0.2);
+}
+[data-testid="stSidebar"] .st-emotion-cache-1wmy9hl {
+  background: transparent;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Space Grotesk", monospace;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}

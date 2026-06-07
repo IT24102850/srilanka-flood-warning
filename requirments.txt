@@ -7,3 +7,9 @@ geopandas
 joblib
 pyarrow
 pydeck
+plotly
+streamlit-option-menu
+streamlit-lottie
+requests
+xarray
+jinja2
